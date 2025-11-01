@@ -1,8 +1,13 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Use class-based dark mode so light is default */
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  color-scheme: light dark;
 }
 
 @theme inline {
@@ -12,10 +17,31 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Optional: enable dark theme only when `.dark` is present */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+/* Smooth scrolling for in-page anchors */
+html {
+  scroll-behavior: smooth;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
@@ -23,4 +49,21 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Improve text rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Sidebar scrollbar styling (WebKit) */
+.sidebar::-webkit-scrollbar {
+  width: 0.375rem; /* w-1.5 */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1; /* slate-300 */
+  border-radius: 0.25rem; /* rounded */
 }
